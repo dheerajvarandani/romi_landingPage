@@ -2,208 +2,584 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LawMango – Open-Source Legal Practice Management</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <!-- Phosphor Icons CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/phosphor.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
 
   <style>
-
-html {
-  scroll-behavior: smooth;   /* enables smooth anchor scrolling */
+:root {
+  --primary: #7b68ee;
+  --secondary: #7ef2f9;
+  --gradient: linear-gradient(120deg, #3977f6, #9147eb, #437ad4, #bd62b8, #6d4aff, #54b4d3);
+  --gradient-main: linear-gradient(120deg, #fff7ff 0%, #e0eaff 100%);
+  --gradient-accent: linear-gradient(90deg, #7b68ee 0%, #7ef2f9 100%);
+  --glass-bg: rgba(255,255,255,0.6);
+  --shadow: 0 6px 32px rgba(30,60,180,0.10), 0 1.5px 6px rgba(120,50,240,0.07);
+  --curve: cubic-bezier(.8,.01,.2,1);
 }
 
-    /* ---------- CSS RESET ---------- */
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:"Inter",system-ui,sans-serif;line-height:1.6;color:#e0e7ff;background:#0f172a}
-    img{max-width:100%;display:block}
-    a{text-decoration:none;color:inherit}
+html, body { height: 100%; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--gradient-main);
+  color: #212244;
+  min-height: 100vh;
+  font-family: 'Overlock', Arial, sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+  line-height: 1.6;
+  scroll-behavior: smooth!important;
+}
 
-    /* ---------- THEME ---------- */
-    :root{
-      --primary-500:#7c3aed;
-      --primary-600:#6d28d9;
-      --primary-700:#5b21b6;
-      --gradient-btn:linear-gradient(135deg,var(--primary-500),var(--primary-600));
-      --bg-gradient:linear-gradient(135deg,#10265f 0%,#1645ba 40%,#2196f3 100%);
-      --gray-50:rgba(255,255,255,0.08);
-      --gray-100:rgba(255,255,255,0.12);
-      --gray-200:rgba(255,255,255,0.2);
-      --shadow-sm:0 4px 6px rgba(0,0,0,.2);
-      --shadow-md:0 8px 20px rgba(0,0,0,.25);
+a { color: inherit; text-decoration: none; }
+
+section { padding: clamp(3rem,7vw,5rem) 1.25rem; position: relative; }
+
+.container { max-width: 1150px; margin: 0 auto; }
+
+h1, h2, h3 { color: #222; font-weight: 900; }
+h1 {
+  font-size: clamp(2.3rem,5vw,3.8rem);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #7b68ee 15%, #7ef2f9 85%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gradientflow 3.5s infinite linear alternate;
+}
+@keyframes gradientflow {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+h2 { font-size: clamp(1.8rem,4vw,2.7rem); margin-bottom: 2rem; }
+h3 { font-size: 1.3rem; margin-bottom: .75rem; }
+
+p { color: #444a61; }
+ul { padding-left: 1.3rem; }
+li { margin-bottom: .7rem; }
+
+.btn {
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: .85rem 2.5rem;
+  font-weight: 700;
+  font-size: 1.12rem;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: background .2s var(--curve), box-shadow .2s;
+  margin-top: 1.2rem;
+  display: inline-block;
+}
+.btn:hover {
+  background: linear-gradient(90deg, #7ef2f9 0%, #7b68ee 100%);
+  box-shadow: 0 12px 30px #c7cbf7b0;
+}
+
+/* Navbar */
+.nav {
+  position: sticky; top: 0; width: 100%; z-index: 99;
+  background: rgba(255, 255, 255, 0.441); backdrop-filter: blur(14px);
+  box-shadow: 0 2px 14px rgba(200,210,250,0.07);
+  border-bottom: 1.5px solid #e0eaff;
+  padding: .2rem 0;
+}
+.nav__inner {
+  max-width: 1150px; margin: 0 auto; display: flex;
+  justify-content: space-between; align-items: center; gap: 1rem;
+  padding: .7rem 1.25rem;
+}
+.logo { font-weight: 900; font-size: 1.5rem; letter-spacing: .03em; color: var(--primary); }
+.nav__links { display: flex; gap: 2rem; }
+.nav__links a { position: relative; font-weight: 600; padding-bottom: 2px; color: #ffffff; }
+.nav__links a:after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--gradient-accent); border-radius: 1.5px;
+  transform: scaleX(0); transition: transform .25s var(--curve);
+}
+.nav__links a:hover { color: var(--primary); }
+.nav__links a:hover:after { transform: scaleX(1); }
+.nav__login {
+  background: #fff; border: 1.5px solid #d6e0ff; border-radius: 1.6rem;
+  font-weight: 600; color: #555; padding: .6rem 1.5rem;
+  transition: background .18s var(--curve), color .18s;
+}
+.nav__login:hover { background: var(--gradient-accent); color: #fff; border-color: #fff; }
+
+@media (max-width: 700px) {
+  .nav__links { display: none; }
+  .nav__login { padding: .6rem 1rem; font-size: .98rem;}
+}
+
+/* Hero */
+.hero-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100vw; height: 100vh;
+      background: var(--gradient);
+      background-size: 260% 260%;
+      animation: moveBg 36s ease-in-out infinite;
+      filter: blur(14px) brightness(1.07);
+    }
+    @keyframes moveBg {
+      0%, 100% {background-position: 0% 55%;}
+      40% {background-position: 100% 60%;}
+      60% {background-position: 30% 100%;}
+    }
+    .hero {
+      min-height: 96vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      padding: 0 8vw;
+    }
+    .hero-content {
+      z-index: 2;
+      max-width: 600px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1.1rem;
+      letter-spacing: -2px;
+      line-height: 1.08;
+      text-shadow: 0 4px 32px rgba(50,30,100,0.18);
+    }
+    .hero-sub {
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin-bottom: 2.1rem;
+      line-height: 1.24;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 24px rgba(50,30,100,0.16);
+    }
+    .hero-list {
+      font-size: 1.18rem;
+      font-weight: 500;
+      margin-bottom: 2.1rem;
+      line-height: 1.6;
+      padding-left: 0;
+      color: #fff;
+      list-style: none;
+      text-shadow: 0 1.5px 8px rgba(60,80,150,0.14);
+    }
+    .hero-list li {
+      margin-bottom: 0.28em;
+    }
+    .hero-btn {
+      background: linear-gradient(90deg, #7b6cf6 30%, #53d8fb 100%);
+      color: #fff;
+      font-size: 1.18rem;
+      font-weight: 700;
+      padding: 0.82em 2.2em;
+      border: none;
+      border-radius: 2em;
+      cursor: pointer;
+      box-shadow: 0 2px 24px rgba(90,70,200,0.13);
+      transition: background 0.13s, color 0.13s, transform 0.09s;
+      letter-spacing: 0.04em;
+      margin-top: 0.5em;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(90,70,200,0.08);
+    }
+    .hero-btn:hover {
+      background: linear-gradient(90deg, #53d8fb 0%, #7b6cf6 70%);
+      color: #fff;
+      transform: translateY(-2px) scale(1.045);
+      box-shadow: 0 8px 32px rgba(123,108,246,0.17);
+    }
+    .hero-image-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .hero-image {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b2bacb;
+      font-size: 1.13rem;
+      font-weight: 600;
+    }
+    @media (max-width: 1100px) {
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.5rem 3vw;
+      }
+      .hero-image-container {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        width: 92vw;
+        max-width: 400px;
+        height: 45vw;
+        min-height: 150px;
+      }
     }
 
-    /* ---------- GLOBAL ---------- */
-    section{padding:clamp(3rem,8vw,5rem) 1.25rem}
-    .container{max-width:1200px;margin-inline:auto}
-    h1{font-size:clamp(2.25rem,5vw,3.5rem);font-weight:900;line-height:1.15;margin-bottom:1rem;color:#fff}
-    h2{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;margin-bottom:2rem;text-align:center;color:#fff}
-    h3{font-size:1.25rem;font-weight:700;margin-bottom:.5rem;color:#fff}
-    p{color:#cbd5e1}
+/* Section curve/wave */
+.section-divider {
+  width: 100%; height: 48px; display: block; margin: -1px 0 0 0; pointer-events: none;
+  background: none;
+}
 
-    /* ---------- BUTTONS ---------- */
-    .btn{display:inline-block;padding:.75rem 1.75rem;border-radius:.5rem;font-weight:600;background-image:var(--gradient-btn);color:#fff;transition:transform .25s ease,box-shadow .25s ease;box-shadow:var(--shadow-sm)}
-    .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:var(--shadow-md)}
-    .btn:active{transform:translateY(0);box-shadow:var(--shadow-sm)}
+/* Glass cards (Features, Pricing, etc.) */
+.features-section {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 6rem 0 6rem 0;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .features-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%; height: 100%;
+    /*background: linear-gradient(120deg, #3977f6 10%, #9147eb 60%, #54b4d3 100%);*/
+    background: cornflowerblue;
+    background-size: 260% 260%;
+    animation: moveBgFeatures 44s ease-in-out infinite;
+    filter: blur(20px) brightness(1.09);
+    opacity: 0.93;
+    pointer-events: none;
+  }
+  @keyframes moveBgFeatures {
+    0%, 100% {background-position: 0% 60%;}
+    50% {background-position: 90% 40%;}
+  }
+  .features-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2vw;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .features-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    margin-bottom: 3.4rem;
+    letter-spacing: -1.2px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 3px 30px rgba(40, 50, 120, 0.19);
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+    gap: 2.3rem 2.1rem;
+    width: 100%;
+    margin-top: 0.2rem;
+  }
+  .feature-card {
+    background: rgba(24, 28, 60, 0.063);
+    padding: 2.3rem 2rem 2rem 2rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    border: 1.5px solid rgba(255,255,255,0.07);
+    min-height: 280px;
+    opacity: 0.97;
+    transition: transform 0.25s cubic-bezier(.4,2,.3,1), box-shadow 0.25s;
+    will-change: transform;
+  }
+  .feature-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 16px 50px 0 rgba(110,80,230,0.18);
+  }
+  .feature-icon {
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 0.6rem;    
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    /* ---------- NAV ---------- */
-    .nav{position:sticky;top:0;inset-inline:0;background:rgba(15,23,42,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--gray-100);z-index:10}
-    .nav__inner{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.75rem 1.25rem;max-width:1200px;margin-inline:auto}
-    .nav__links{display:flex;gap:1.75rem;font-weight:500}
-    .nav__links a{position:relative;padding-bottom:4px;transition:color .2s;color:#e0e7ff}
-    .nav__links a::after{content:"";position:absolute;height:2px;left:0;right:0;bottom:0;background:var(--primary-500);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
-    .nav__links a:hover{color:#fff}
-    .nav__links a:hover::after{transform:scaleX(1)}
-    .nav__login{padding:.55rem 1.4rem;border-radius:.375rem;font-weight:500;border:1px solid var(--gray-100);transition:background .2s,color .2s;color:#e0e7ff}
-    .nav__login:hover{background:var(--primary-500);color:#fff}
+  }
+  .feature-img{
+    max-width: 250px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+  }
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    color: #fff;
+  }
+  .feature-desc {
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: #e3eafe;
+    line-height: 1.56;
+    letter-spacing: 0.01em;
+  }
+  @media (max-width: 900px) {
+    .features-section {
+      padding: 4rem 0 3rem 0;
+    }
+    .features-title {
+      font-size: 2rem;
+    }
+    .feature-card {
+      min-height: 220px;
+      padding: 1.5rem 1.3rem 1.2rem 1.3rem;
+    }
+  }
+.pricing__grid .price-card {
+  border: 2.5px solid #b8c5fc; background: rgba(255,255,255,0.75);
+}
+.price-card.pro {
+  border: 2.5px solid var(--primary);
+  box-shadow: 0 18px 48px #b2cffb44,0 2px 8px #bb80ec1c;
+  background: rgba(247,242,255,0.96);
+}
 
-    /* ---------- HERO ---------- */
-    .hero{position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:0;background:var(--bg-gradient);z-index:-2}
-    /* Decorative rings */
-    .hero::after{content:"";position:absolute;right:-150px;bottom:-150px;width:500px;height:500px;border:60px solid rgba(255,255,255,.2);border-radius:50%;filter:blur(4px);z-index:-1}
-    .hero__grid{display:grid;gap:3rem;align-items:center;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
-    .hero li{list-style:none;display:flex;align-items:flex-start;gap:.5rem;margin-bottom:.6rem;color:#cbd5e1}
-    .hero li::before{content:"✔";color:#34d399;font-weight:700}
+.price-card .btn { width: 100%; margin-top: 1.3rem; }
+.price-card .tag {
+  position: absolute; top: 1.1rem; right: 1.2rem; font-size: .95rem; font-weight: 600;
+  color: #fff; background: var(--primary); padding: .32em 1.1em; border-radius: 1rem;
+  letter-spacing: .01em; box-shadow: 0 2px 12px #7b68ee38;
+}
 
-    /* ---------- FEATURES ---------- */
-    .features{background:var(--gray-50);backdrop-filter:blur(6px)}
-    .features__grid{display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    .feature{background:rgba(255,255,255,.05);border:1px solid var(--gray-100);border-radius:.75rem;padding:2rem 1.5rem;text-align:center;transition:transform .25s ease,box-shadow .25s ease;box-shadow:var(--shadow-sm)}
-    .feature:hover{transform:translateY(-8px) rotateX(2deg) rotateY(-2deg);box-shadow:var(--shadow-md)}
+.comparison {
+  background: #f3f5fc; box-shadow: var(--shadow); border-radius: 1.2rem;
+  overflow-x: auto; margin-top: 4rem;
+}
+.comparison table {
+  width: 100%; border-collapse: collapse; min-width: 560px;
+  background: transparent;
+}
+.comparison th, .comparison td {
+  padding: .85rem 1.1rem; text-align: left; border-bottom: 1px solid #e6eaff;
+  color: #3a375e;
+}
+.comparison th { font-weight: 700; font-size: 1.04rem; background: #e9efff; }
+.comparison tr:nth-child(even) td { background: #f9faff; }
 
-    /* ---------- SPLIT SECTIONS ---------- */
-    .split{display:grid;gap:3rem;align-items:center;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
-    .split--reverse .content{order:2}
-    .split img{border-radius:.75rem;box-shadow:var(--shadow-md)}
+.comparison td.check { color: #39c77c; font-size: 1.13rem; }
+.comparison td.cross { color: #e67878; font-size: 1.13rem; }
 
-    /* ---------- COMPARISON ---------- */
-    .comparison{overflow-x:auto;background:var(--gray-50)}
-    .comparison table{width:100%;border-collapse:collapse;min-width:560px}
-    .comparison th,.comparison td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--gray-100);color:#e2e7ff}
-    .comparison th{background:rgba(255,255,255,.06);font-weight:600}
-    .comparison tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+.faq { max-width: 780px; margin-inline: auto; }
+.faq-item { background: var(--glass-bg); border-radius: 1rem; margin-bottom: 1.3rem;
+  box-shadow: 0 1px 8px #f2f7ff8c; border: 1px solid #e8eaff; }
+.faq-question {
+  width: 100%; text-align: left; background: none; border: none; outline: none;
+  font-weight: 700; font-size: 1.08rem; display: flex; align-items: center;
+  justify-content: space-between; cursor: pointer; color: #292959;
+  padding: 1.1rem 1.25rem;
+  transition: color .18s;
+}
+.faq-answer { padding: 0 1.2rem 1.4rem 1.2rem; color: #556080; display: none; }
+.faq-item.open .faq-answer { display: block; }
+.faq-question span { font-size: 1.35rem; margin-left: .5em; color: var(--primary);}
+.faq-item.open .faq-question span { color: #28d2ad;}
 
-    /* ---------- FAQ ---------- */
-    .faq{max-width:720px;margin-inline:auto}
-    .faq-item+.faq-item{border-top:1px solid var(--gray-100)}
-    .faq-question{width:100%;text-align:left;background:none;border:none;padding:1.25rem;font-size:1rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:#e0e7ff}
-    .faq-answer{padding:0 1.25rem 1.25rem;display:none;color:#cbd5e1}
-    .faq-item.open .faq-answer{display:block}
+.final-cta { text-align: center; background: var(--gradient-accent); color: #fff; border-radius: 1.2rem; box-shadow: var(--shadow); margin: 4rem 0 0 0;}
+.final-cta h2, .final-cta p { color: #fff; }
+.final-cta .btn { background: #fff; color: var(--primary);}
+.final-cta .btn:hover { background: #222; color: #fff;}
 
-    /* ---------- FINAL CTA ---------- */
-    .final-cta{text-align:center;background:var(--bg-gradient)}
+footer {
+  background: #f8f9ff; color: #75768c; text-align: center;
+  padding: 2rem 1rem .5rem 1rem; font-size: .98rem; margin-top: 4rem;
+  border-top: 1.5px solid #e0eaff;
+}
+footer h3 { color: var(--primary);}
+footer ul {list-style: none; padding: 0;}
+footer a {color: #75768c;}
+footer a:hover { color: var(--primary); }
 
-    /* ---------- FOOTER ---------- */
-    footer{background:rgba(0,0,0,.3);text-align:center;padding:2rem 1rem;color:#cbd5e1}
+/* Wavy section separators */
+.wave {
+  width: 100vw;
+  min-width: 100%;
+  height: 80px;
+  display: block;
+  position: absolute;
+  left: 0; bottom: 0; z-index: 1;
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <nav class="nav" aria-label="Site navigation">
-    <div class="nav__inner">
-      <a href="#" class="logo" aria-label="LawMango" style="font-weight:800;font-size:1.25rem;color:#fff">LawMango</a>
-      <div class="nav__links" aria-label="Primary">
-        <a href="#features">Features</a>
-        <a href="#benefits">Benefits</a>
-        <a href="#comparison">Comparison</a>
-        <a href="#pricing">Pricing</a>
-      </div>
-      <a href="#" class="nav__login">Login</a>
-    </div>
-  </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="container hero__grid">
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="#" class="logo">LawMango</a>
+    <div class="nav__links">
+      <a href="#features">Features</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a href="#" class="nav__login">Login</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-bg"></div>
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-title">Open-Source Legal Practice Management</div>
+    <div class="hero-sub">Run Your Law Firm Smarter—with LawMango</div>
+    <ul class="hero-list">
+      <li>Manage clients, cases, and documents</li>
+      <li>Track time, generate invoices instantly</li>
+      <li>Real-time reporting and analytics</li>
+    </ul>
+    <a href="#" class="hero-btn">Get Started</a>
+  </div>
+  <div class="hero-image-container">
+    <!-- Replace below with your image/mockup -->
+    <img src="./assets/appmockup.png" alt="App Screenshot" class="hero-image" />
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="features-bg"></div>
+  <div class="features-content">
+    <div class="features-title" data-aos="fade-up">
+      Powerful Features
+    </div>
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+        <div >
+          <!-- Lucide: Users -->
+          <img class="feature-img" src="./assets/client.png" alt="">
+        </div>
+        <div class="feature-title">Client & Case Management</div>
+        <div class="feature-desc">Keep all your client information and case details organized in one secure place.</div>
+      </div>
+      <!-- Feature 2 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+        <div >
+          <!-- Lucide: Users -->
+          <img class="feature-img" src="./assets/hourglass.png" alt="">
+        </div>
+        <div class="feature-title">Time Tracking</div>
+        <div class="feature-desc">Log time simply and precisely so you can maximize revenue and ensure every minute counts.</div>
+      </div>
+      <!-- Feature 3 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+        <div >
+          <!-- Lucide: Users -->
+          <img class="feature-img" src="./assets/billing.png" alt="">
+        </div>
+        <div class="feature-title">Billing</div>
+        <div class="feature-desc">Get paid faster and keep your cash flow healthy without the hassle.</div>
+      </div>
+      <!-- Feature 4 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+        <div >
+          <!-- Lucide: Users -->
+          <img class="feature-img" src="./assets/calendar.png" alt="">
+        </div>
+        <div class="feature-title">Calendar</div>
+        <div class="feature-desc">Manage all your appointments, court dates, and deadlines with one easy-to-use calendar.</div>
+      </div>
+      <!-- Feature 5 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+        <div >
+          <!-- Lucide: Users -->
+          <img class="feature-img" src="./assets/documents.png" alt="">
+        </div>
+        <div class="feature-title">Docs Management</div>
+        <div class="feature-desc">Organize, store, and access all your legal documents securely in one place.</div>
+      </div>
+      <!-- Feature 6 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+        <div >
+          <!-- Lucide: Users -->
+          <img class="feature-img" src="./assets/report.png" alt="">
+        </div>
+        <div class="feature-title">Advanced Reports</div>
+        <div class="feature-desc">Powerful reporting tools that give you a clear view of your firm’s performance.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="split" id="benefits" style="background:#fff;">
+  <div class="container">
+    <div class="features__grid" style="align-items:center;">
+      <div class="image" style="text-align:center;">
+        <!-- Animated SVG Gauge -->
+        <svg id="smartGauge" width="210" height="160" viewBox="0 0 210 160">
+          <path d="M30 130 A80 80 0 0 1 180 130" fill="none" stroke="#e0eaff" stroke-width="18"/>
+          <path id="gaugeTrack" d="M30 130 A80 80 0 0 1 180 130" fill="none" stroke="#7b68ee" stroke-width="18" stroke-linecap="round"
+          stroke-dasharray="251" stroke-dashoffset="251"/>
+          <line id="gaugeNeedle" x1="105" y1="130" x2="105" y2="66" stroke="#7ef2f9" stroke-width="6" stroke-linecap="round"
+          style="transform-origin: 105px 130px; transform: rotate(-90deg);" />
+          <circle cx="105" cy="130" r="10" fill="#fff"/>
+          <text id="gaugeText" x="105" y="90" text-anchor="middle" font-size="32" font-weight="700" fill="#7b68ee">0%</text>
+        </svg>
+      </div>
       <div class="content">
-        <p style="font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#a5b4fc">Open-Source Legal Practice Management Software</p>
-        <h1>Run Your Entire Law Firm With Powerful Open-Source Software</h1>
-        <ul>
-          <li>Manage clients, cases, and documents</li>
-          <li>Track time and generate invoices in seconds</li>
-          <li>Monitor performance with real-time reporting</li>
-        </ul>
+        <h2>The Smarter, Faster Way to Run Your Law Firm</h2>
+        <p style="margin-bottom:1.5rem;">Never track time manually or juggle tools that weren’t built for law firms. Manage your clients, cases, time tracking, billing, calendar, documents, and reports with LawMango, the all-in-one platform for modern legal practices.</p>
         <a href="#pricing" class="btn">Get Started</a>
-        <p style="margin-top:.5rem;font-size:.875rem;color:#9ca3af">7-Day Money-Back Guarantee</p>
+      </div>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 80"><path fill="#f3f5fc" d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,58.7C672,43,768,21,864,21.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,85.3L1440,86V0H0Z"></path></svg>
+</section>
+
+<section class="split" style="background:#f3f5fc;">
+  <div class="container">
+    <div class="features__grid" style="align-items:center;">
+      <div class="content">
+        <h2>Profitability, without the stress.</h2>
+        <p style="margin-bottom:1.5rem;">You didn’t become a lawyer to get buried in admin work. LawMango streamlines your practice so you can focus on winning cases and serving clients. Work smarter, grow faster, and boost your firm’s profitability.</p>
+        <a href="#pricing" class="btn">Get Started</a>
       </div>
       <div class="image">
-        <img src="https://via.placeholder.com/550x400/1e3a8a/ffffff?text=App+Screenshot" alt="App Screenshot" />
+        <canvas id="profitChart" width="320" height="180" aria-label="Profit growth chart" style="background: #fff; border-radius: 1.2rem; box-shadow: var(--shadow);"></canvas>
       </div>
     </div>
-  </section>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 80"><path fill="#fff" d="M0,64L48,74.7C96,85,192,107,288,106.7C384,107,480,85,576,64C672,43,768,21,864,21.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,85.3L1440,86V0H0Z"></path></svg>
+</section>
 
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="container">
-      <h2>Features</h2>
-      <div class="features__grid">
-        <div class="feature"><h3>Client & Case Management</h3><p>Keep all your client information and case details organized in one secure place.</p></div>
-        <div class="feature"><h3>Time Tracking</h3><p>Log time simply and precisely so you can maximize revenue and ensure every minute counts.</p></div>
-        <div class="feature"><h3>Billing</h3><p>Get paid faster and keep your cash flow healthy without the hassle.</p></div>
-        <div class="feature"><h3>Calendar</h3><p>Manage all your appointments, court dates, and deadlines with one easy-to-use calendar.</p></div>
-        <div class="feature"><h3>Docs Management</h3><p>Organize, store, and access all your legal documents securely in one place.</p></div>
-        <div class="feature"><h3>Advanced Reports</h3><p>Powerful reporting tools that give you a clear view of your firm’s performance.</p></div>
-      </div>
-      <div style="text-align:center;margin-top:3rem">
-        <a href="#pricing" class="btn">Get Started</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- BENEFIT BLOCK 1 -->
-  <section class="split" id="benefits">
-    <div class="container">
-      <div class="split">
- <!-- Replace the <img> with this SVG gauge -->
-<div class="image">
-  <svg id="smartGauge" width="500" height="350" viewBox="0 0 500 350">
-    <!-- Background arc -->
-    <path d="M50 300 A200 200 0 0 1 450 300" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="32"/>
-    <!-- Animated arc -->
-    <path id="gaugeTrack" d="M50 300 A200 200 0 0 1 450 300"
-          fill="none" stroke="#7c3aed" stroke-width="32" stroke-linecap="round"
-          stroke-dasharray="628" stroke-dashoffset="628"/>
-    <!-- Needle -->
-    <line id="gaugeNeedle"
-    x1="250" y1="300" x2="250" y2="115"
-    stroke="#ffffff" stroke-width="6" stroke-linecap="round"
-    style="transform-origin: 250px 300px; transform: rotate(-90deg);" />
-    <!-- Center hub -->
-    <circle cx="250" cy="300" r="10" fill="#ffffff"/>
-    <!-- Text -->
-    <text id="gaugeText" x="250" y="190" text-anchor="middle"
-          font-size="48" font-weight="700" fill="#ffffff">0%</text>
-  </svg>
-</div>
-
-        <div class="content">
-          <h2 style="text-align:left">The Smarter, Faster Way to Run Your Law Firm</h2>
-          <p style="margin-bottom:1.5rem">Never track time manually or juggle tools that weren’t built for law firms. Manage your clients, cases, time tracking, billing, calendar, documents, and reports with LawMango, the all-in-one powerful legal practice management software.</p>
-          <a href="#pricing" class="btn">Get Started</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BENEFIT BLOCK 2 -->
-  <section class="split">
-    <div class="container">
-      <div class="split">
-        <div class="content">
-          <h2 style="text-align:left">More efficiently, more profitably, and with less stress.</h2>
-          <p style="margin-bottom:1.5rem">You didn’t become a lawyer to spend your days buried in admin work. LawMango streamlines your legal practice so you can focus on what matters most—winning cases and serving clients. Manage your workload with ease and increase your firm’s profitability.</p>
-          <a href="#pricing" class="btn">Get Started</a>
-        </div>
-        <div class="image">
-          <canvas id="profitChart" width="500" height="350" aria-label="Profit growth chart"></canvas>
-        </div>
-      </div>
-    </div>
-  </section>
-
- <!-- COMPARISON TABLE -->
+<!-- COMPARISON TABLE -->
 <section class="comparison" id="comparison">
   <div class="container">
+    <h2>How LawMango Compares</h2>
     <table>
       <thead>
         <tr>
@@ -250,53 +626,46 @@ html {
 </section>
 
 <!-- PRICING -->
-<section class="pricing" id="pricing">
+<section class="pricing" id="pricing" style="background:#fff;">
   <div class="container">
     <h2>Simple, transparent pricing</h2>
-
-    <div style="display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
-
-      <!-- Free / Community -->
-      <div style="background:rgba(255,255,255,.05);border:1px solid var(--gray-100);border-radius:.75rem;padding:2rem 1.5rem;text-align:center;">
+    <div class="pricing__grid">
+      <div class="price-card">
         <h3>Community</h3>
-        <p style="font-size:2rem;font-weight:800;margin:.5rem 0 1rem;">$0</p>
-        <p style="font-size:.875rem;margin-bottom:1.25rem;color:#94a3b8;">Self-hosted • Unlimited users</p>
-        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.4rem;text-align:left;">
+        <p style="font-size:2rem;font-weight:800;margin:.6rem 0 1.3rem;">$0</p>
+        <p style="font-size:.97rem;margin-bottom:1.1rem;color:#8e8faa;">Self-hosted • Unlimited users</p>
+        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.42rem;text-align:left;">
           <li>✔ Core case & client management</li>
           <li>✔ Built-in time tracking</li>
           <li>✔ Community forum support</li>
         </ul>
-        <a href="#" class="btn" style="width:100%;text-align:center;">Download</a>
+        <a href="#" class="btn">Download</a>
       </div>
-
-      <!-- Pro / Cloud -->
-      <div style="background:rgba(255,255,255,.07);border:2px solid var(--primary-500);border-radius:.75rem;padding:2rem 1.5rem;text-align:center;box-shadow:var(--shadow-md);">
+      <div class="price-card pro">
+        <span class="tag">Most Popular</span>
         <h3>Pro&nbsp;Cloud</h3>
-        <p style="font-size:2rem;font-weight:800;margin:.5rem 0 1rem;">$29<span style="font-size:.875rem;font-weight:500;">/user/mo</span></p>
-        <p style="font-size:.875rem;margin-bottom:1.25rem;color:#94a3b8;">Fully-hosted • Priority support</p>
-        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.4rem;text-align:left;">
+        <p style="font-size:2rem;font-weight:800;margin:.6rem 0 1.3rem;">$29<span style="font-size:.92rem;font-weight:500;">/user/mo</span></p>
+        <p style="font-size:.97rem;margin-bottom:1.1rem;color:#8e8faa;">Fully-hosted • Priority support</p>
+        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.42rem;text-align:left;">
           <li>✔ Everything in Community</li>
           <li>✔ Secure cloud hosting & backups</li>
           <li>✔ E-invoicing & online payments</li>
           <li>✔ Email / chat support</li>
         </ul>
-        <a href="#" class="btn" style="width:100%;text-align:center;">Start Free Trial</a>
+        <a href="#" class="btn">Start Free Trial</a>
       </div>
-
-      <!-- Enterprise -->
-      <div style="background:rgba(255,255,255,.05);border:1px solid var(--gray-100);border-radius:.75rem;padding:2rem 1.5rem;text-align:center;">
+      <div class="price-card">
         <h3>Enterprise</h3>
-        <p style="font-size:2rem;font-weight:800;margin:.5rem 0 1rem;">Custom</p>
-        <p style="font-size:.875rem;margin-bottom:1.25rem;color:#94a3b8;">On-prem or private cloud</p>
-        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.4rem;text-align:left;">
+        <p style="font-size:2rem;font-weight:800;margin:.6rem 0 1.3rem;">Custom</p>
+        <p style="font-size:.97rem;margin-bottom:1.1rem;color:#8e8faa;">On-prem or private cloud</p>
+        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.42rem;text-align:left;">
           <li>✔ Everything in Pro</li>
           <li>✔ SSO & custom integrations</li>
           <li>✔ Dedicated account manager</li>
           <li>✔ SLA & priority response</li>
         </ul>
-        <a href="#" class="btn" style="width:100%;text-align:center;">Contact Sales</a>
+        <a href="#" class="btn">Contact Sales</a>
       </div>
-
     </div>
   </div>
 </section>
@@ -304,78 +673,71 @@ html {
 <!-- FAQ -->
 <section class="faq" id="faq">
   <h2>Frequently Asked Questions</h2>
-
   <div class="faq-item">
     <button class="faq-question">Is LawMango really open source?<span>+</span></button>
     <div class="faq-answer"><p>Yes. The core codebase is MIT-licensed on GitHub. You can self-host, fork, or contribute.</p></div>
   </div>
-
   <div class="faq-item">
     <button class="faq-question">Do I have to pay to use it?<span>+</span></button>
     <div class="faq-answer"><p>No. The Community tier is free forever when you self-host. Paid plans add hosting and premium features.</p></div>
   </div>
-
   <div class="faq-item">
     <button class="faq-question">Can I migrate from another system?<span>+</span></button>
     <div class="faq-answer"><p>Absolutely. Our import wizard supports CSV, Clio, and MyCase exports, or we can handle it for you.</p></div>
   </div>
-
   <div class="faq-item">
     <button class="faq-question">Is my data secure in the cloud version?<span>+</span></button>
     <div class="faq-answer"><p>We store data in SOC-2 compliant data centers with daily encrypted backups and at-rest encryption.</p></div>
   </div>
-
   <div class="faq-item">
     <button class="faq-question">Do you offer discounts for nonprofits?<span>+</span></button>
-    <div class="faq-answer"><p>Yes—public-interest and legal-aid organizations receive 40 % off Pro and Enterprise plans.</p></div>
+    <div class="faq-answer"><p>Yes—public-interest and legal-aid organizations receive 40% off Pro and Enterprise plans.</p></div>
   </div>
 </section>
 
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Ready to streamline your firm?</h2>
+    <p style="font-size:1.2rem;">Experience the future of legal practice management—free for 14 days.</p>
+    <a href="#pricing" class="btn">Start Free Trial</a>
+  </div>
+</section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="container" style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:center;">
-    <!-- Brand / Tagline -->
+  <div class="container" style="display:flex;flex-wrap:wrap;gap:2.1rem;justify-content:space-between;align-items:center;">
     <div style="flex:1 1 220px;">
       <h3 style="margin-bottom:.5rem;">LawMango</h3>
-      <p style="font-size:.875rem;color:#94a3b8;">
-        Open-source software built to streamline every aspect of your legal practice.
-      </p>
+      <p style="font-size:.97rem;color:#8586a0;">Open-source software built to streamline every aspect of your legal practice.</p>
     </div>
-
-    <!-- Quick Links -->
-    <nav style="flex:1 1 160px;">
-      <ul style="list-style:none;display:grid;gap:.5rem;font-size:.875rem;">
+    <nav style="flex:1 1 150px;">
+      <ul style="display:grid;gap:.5rem;font-size:.96rem;">
         <li><a href="#features">Features</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#home">Back to Top ↑</a></li>
       </ul>
     </nav>
-
-    <!-- Social / Contact -->
-    <div style="flex:1 1 160px;text-align:left;">
-      <p style="font-size:.875rem;margin-bottom:.5rem;">Stay connected</p>
-      <div style="display:flex;gap:.75rem;font-size:1.25rem;">
-        <a href="#" aria-label="LinkedIn">🔗</a>
-        <a href="#" aria-label="Twitter / X">✕</a>
-        <a href="#" aria-label="GitHub">🐱</a>
+    <div style="flex:1 1 120px;text-align:left;">
+      <p style="font-size:.95rem;margin-bottom:.6rem;">Stay connected</p>
+      <div style="display:flex;gap:.7rem;font-size:1.35rem;">
+        <a href="#" aria-label="LinkedIn"><i class="ph ph-linkedin-logo"></i></a>
+        <a href="#" aria-label="Twitter / X"><i class="ph ph-twitter-logo"></i></a>
+        <a href="#" aria-label="GitHub"><i class="ph ph-github-logo"></i></a>
       </div>
     </div>
   </div>
-
-  <hr style="border:none;border-top:1px solid rgba(255,255,255,0.12);margin:2rem auto 1rem;max-width:1200px;">
-  <p style="font-size:.75rem;color:#94a3b8;text-align:center;">
-    © <span id="year"></span> LawMango. All rights reserved.
-  </p>
+  <hr style="border:none;border-top:1px solid #e0eaff;margin:2rem auto 1rem;max-width:1150px;">
+  <p style="font-size:.85rem;color:#a6a9bb;">© <span id="year"></span> LawMango. All rights reserved.</p>
 </footer>
+
+<!-- Chart.js for animated chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // dynamic year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-    // FAQ accordion toggle
-    document.querySelectorAll('.faq-question').forEach(btn => {
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.parentElement;
       item.classList.toggle('open');
@@ -383,97 +745,96 @@ html {
     });
   });
 
-  // 1️⃣ Keep the chart config in a function so we can recreate it
+  // Chart.js profit chart (animated on view)
   function createProfitChart(ctx) {
-    // Purple-to-blue gradient
+    // Pastel gradient
     const g = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-    g.addColorStop(0, '#7c3aed');
-    g.addColorStop(1, '#2196f3');
+    g.addColorStop(0, "#7b68ee");
+    g.addColorStop(1, "#7ef2f9");
 
     return new Chart(ctx, {
-      type: 'line',
+      type: "line",
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [{
-          label: 'Monthly Profit ($)',
-          data: [12, 14, 18, 21, 26, 32],     // your numbers here
+          label: "Monthly Profit ($k)",
+          data: [12, 14, 18, 21, 26, 32],
           borderColor: g,
           borderWidth: 3,
-          pointRadius: 4,
-          pointBackgroundColor: '#ffffff',
-          fill: false,
+          pointRadius: 3.5,
+          pointBackgroundColor: "#fff",
+          fill: true,
+          backgroundColor: "rgba(123,104,238,0.12)",
           tension: 0.35
         }]
       },
       options: {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false,
-        animation: { duration: 1200 },       // 1.2-sec tween
+        animation: { duration: 1200 },
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { display: false }, ticks: { color: '#cbd5e1' } },
+          x: { grid: { display: false }, ticks: { color: "#8889b0" } },
           y: {
-            grid: { color: 'rgba(255,255,255,0.08)' },
-            ticks: { color: '#cbd5e1', callback: v => `$${v}k` }
+            grid: { color: "#eef2fb" },
+            ticks: { color: "#8889b0", callback: v => `$${v}k` }
           }
         }
       }
     });
   }
 
-  // 2️⃣ Observer: rebuild the chart each time the canvas re-enters viewport
-  const canvasEl = document.getElementById('profitChart');
-  const ctx = canvasEl.getContext('2d');
+  // Animate/rebuild chart on view
+  const canvasEl = document.getElementById("profitChart");
+  const ctx = canvasEl.getContext("2d");
   let chartInstance = null;
-
-  const observer = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Destroy old chart (if it exists) and recreate
         if (chartInstance) chartInstance.destroy();
         chartInstance = createProfitChart(ctx);
       }
     });
-  }, { threshold: 0.6 });    // fires when 60 % of canvas is visible
-
+  }, { threshold: 0.55 });
   observer.observe(canvasEl);
 
-
-
-    // ===== Animated “Smart Gauge”  ==========================================
-    const gaugeArc   = document.getElementById('gaugeTrack');
+  // Animated “Smart Gauge”
+  const gaugeArc = document.getElementById('gaugeTrack');
   const gaugeNeedle = document.getElementById('gaugeNeedle');
-  const gaugeText  = document.getElementById('gaugeText');
-  const totalLen   = 628;              // stroke-dasharray matches this
-
+  const gaugeText = document.getElementById('gaugeText');
+  const totalLen = 251;
   function animateGauge() {
-    // Animate strokeDashoffset from full -> 0
     gaugeArc.animate([{ strokeDashoffset: totalLen }, { strokeDashoffset: 0 }],
-                     { duration: 1200, fill: 'forwards', easing: 'ease-out' });
-// rotate from -90° to +90°
-gaugeNeedle.animate(
-  [{ transform: 'rotate(-90deg)' },
-   { transform: 'rotate(90deg)' }],
-  { duration: 1200, fill: 'forwards', easing: 'ease-out' }
-);
-    // Count-up percentage text
-    const frames = 60, step = 100 / frames;
+                     { duration: 1300, fill: 'forwards', easing: 'ease-out' });
+    gaugeNeedle.animate(
+      [{ transform: 'rotate(-90deg)' },
+       { transform: 'rotate(90deg)' }],
+      { duration: 1300, fill: 'forwards', easing: 'ease-out' }
+    );
+    // Count-up percentage
+    const frames = 56, step = 100 / frames;
     let n = 0;
     const counter = setInterval(() => {
       n += step;
       gaugeText.textContent = `${Math.round(n)}%`;
       if (n >= 100) clearInterval(counter);
-    }, 1200 / frames);
+    }, 1300 / frames);
   }
-
-  // ===== Trigger when 60 % in view  ======================================
   const gaugeObserver = new IntersectionObserver(
     entries => entries.forEach(e => {
       if (e.isIntersecting) animateGauge();
-    }), { threshold: 0.6 }
+    }), { threshold: 0.55 }
   );
   gaugeObserver.observe(document.getElementById('smartGauge'));
 </script>
 
-</body> 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    once: true,
+    duration: 900,
+    easing: "ease-out-cubic"
+  });
+</script>
+</body>
 </html>
