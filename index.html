@@ -26,13 +26,13 @@
 
 html, body { height: 100%; }
 body {
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Overlock", system-ui, sans-serif;
   background: var(--gradient-main);
   color: #212244;
   min-height: 100vh;
   font-family: 'Overlock', Arial, sans-serif;
   margin: 0;
-  overflow-x: hidden;
+
   line-height: 1.6;
   scroll-behavior: smooth!important;
 }
@@ -85,155 +85,182 @@ li { margin-bottom: .7rem; }
   box-shadow: 0 12px 30px #c7cbf7b0;
 }
 
-/* Navbar */
-.nav {
-  position: sticky; top: 0; width: 100%; z-index: 99;
-  background: rgba(255, 255, 255, 0.441); backdrop-filter: blur(14px);
-  box-shadow: 0 2px 14px rgba(200,210,250,0.07);
-  border-bottom: 1.5px solid #e0eaff;
-  padding: .2rem 0;
+    /* Navbar */
+    .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 2rem;
+  /* Short, centered bar */
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 2px 14px rgba(90,80,200,0.04);
+  padding: 0.9rem 2.5rem;
+  border-radius: 2.5em;
+  z-index: 10;
+  width: 70vw;
 }
-.nav__inner {
-  max-width: 1150px; margin: 0 auto; display: flex;
-  justify-content: space-between; align-items: center; gap: 1rem;
-  padding: .7rem 1.25rem;
-}
-.logo { font-weight: 900; font-size: 1.5rem; letter-spacing: .03em; color: var(--primary); }
-.nav__links { display: flex; gap: 2rem; }
-.nav__links a { position: relative; font-weight: 600; padding-bottom: 2px; color: #ffffff; }
-.nav__links a:after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
-  background: var(--gradient-accent); border-radius: 1.5px;
-  transform: scaleX(0); transition: transform .25s var(--curve);
-}
-.nav__links a:hover { color: var(--primary); }
-.nav__links a:hover:after { transform: scaleX(1); }
-.nav__login {
-  background: #fff; border: 1.5px solid #d6e0ff; border-radius: 1.6rem;
-  font-weight: 600; color: #555; padding: .6rem 1.5rem;
-  transition: background .18s var(--curve), color .18s;
-}
-.nav__login:hover { background: var(--gradient-accent); color: #fff; border-color: #fff; }
-
-@media (max-width: 700px) {
-  .nav__links { display: none; }
-  .nav__login { padding: .6rem 1rem; font-size: .98rem;}
-}
-
-/* Hero */
-.hero-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      width: 100vw; height: 100vh;
-      background: var(--gradient);
-      background-size: 260% 260%;
-      animation: moveBg 36s ease-in-out infinite;
-      filter: blur(14px) brightness(1.07);
-    }
-    @keyframes moveBg {
-      0%, 100% {background-position: 0% 55%;}
-      40% {background-position: 100% 60%;}
-      60% {background-position: 30% 100%;}
-    }
-    .hero {
-      min-height: 96vh;
+    .navbar-logo {
+      font-size: 1.65rem;
+      font-family: 'Quicksand', 'Inter', Arial, sans-serif;
+      font-weight: 900;
+      color: #23244b;
+      letter-spacing: 1px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      position: relative;
-      padding: 0 8vw;
+      gap: 0.7rem;
     }
-    .hero-content {
-      z-index: 2;
-      max-width: 600px;
-      color: #fff;
+    .navbar-logo-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6d4aff 50%, #53d8fb 100%);
+      display: inline-block;
+      margin-right: 0.2em;
+      vertical-align: middle;
+      box-shadow: 0 2px 10px #7b6cf688;
+    }
+    .navbar-links {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .hero-title {
-      font-size: clamp(2.5rem, 7vw, 4rem);
-      font-weight: 700;
-      margin-bottom: 1.1rem;
-      letter-spacing: -2px;
-      line-height: 1.08;
-      text-shadow: 0 4px 32px rgba(50,30,100,0.18);
-    }
-    .hero-sub {
-      font-size: 1.7rem;
+      align-items: center;
+      gap: 2.2rem;
+      font-size: 1.12rem;
       font-weight: 600;
-      margin-bottom: 2.1rem;
-      line-height: 1.24;
-      letter-spacing: -1px;
-      text-shadow: 0 2px 24px rgba(50,30,100,0.16);
     }
-    .hero-list {
-      font-size: 1.18rem;
-      font-weight: 500;
-      margin-bottom: 2.1rem;
-      line-height: 1.6;
-      padding-left: 0;
+    .navbar-links a {
+      text-decoration: none;
+      color: #1d223c;
+      opacity: 0.87;
+      transition: opacity 0.14s;
+      position: relative;
+      padding: 0.18em 0;
+    }
+    .navbar-links a.active,
+    .navbar-links a:hover {
+      opacity: 1;
+      color: #6d4aff;
+    }
+    .navbar-cta {
+      background: linear-gradient(90deg, #53d8fb 20%, #6d4aff 80%);
       color: #fff;
-      list-style: none;
-      text-shadow: 0 1.5px 8px rgba(60,80,150,0.14);
-    }
-    .hero-list li {
-      margin-bottom: 0.28em;
-    }
-    .hero-btn {
-      background: linear-gradient(90deg, #7b6cf6 30%, #53d8fb 100%);
-      color: #fff;
-      font-size: 1.18rem;
+      font-size: 1.09rem;
       font-weight: 700;
-      padding: 0.82em 2.2em;
       border: none;
       border-radius: 2em;
       cursor: pointer;
-      box-shadow: 0 2px 24px rgba(90,70,200,0.13);
-      transition: background 0.13s, color 0.13s, transform 0.09s;
-      letter-spacing: 0.04em;
-      margin-top: 0.5em;
+      margin-left: 2.5rem;
+      box-shadow: 0 2px 12px #53d8fb22;
       text-decoration: none;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(90,70,200,0.08);
+      transition: background 0.14s, box-shadow 0.14s, color 0.14s;
+      display: flex;
+      align-items: center;
+      gap: 0.45em;
     }
-    .hero-btn:hover {
-      background: linear-gradient(90deg, #53d8fb 0%, #7b6cf6 70%);
+    .navbar-cta:hover {
+      background: linear-gradient(90deg, #6d4aff 10%, #53d8fb 90%);
       color: #fff;
-      transform: translateY(-2px) scale(1.045);
-      box-shadow: 0 8px 32px rgba(123,108,246,0.17);
+      box-shadow: 0 6px 20px #6d4aff44;
     }
-    .hero-image-container {
+
+/* Hero Section */
+.hero {
+      position: relative;
+      width: 100%;
+      min-height: 86vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 4.5rem 2vw 4rem 2vw;
+      text-align: center;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background: radial-gradient(ellipse at 55% 35%, #3b6eea 0%, #6843be 38%, #bc3bd3 70%, #23244b 100%);
+  /* Slightly darker, more saturated than original */
+  filter: blur(2px) brightness(0.92) contrast(1.05);
+  opacity: 0.99;
+  transition: background 1.5s;
+  animation: bgmove 28s ease-in-out infinite alternate;
+}
+@keyframes bgmove {
+  0% {background-position: 40% 50%;}
+  100% {background-position: 60% 70%;}
+}
+    .hero-main {
+      position: relative;
       z-index: 2;
-    }
-    .hero-image {
-      width: 75%;
-      height: 75%;
-      object-fit: contain;
+      max-width: 950px;
+      margin: 0 auto;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      color: #b2bacb;
-      font-size: 1.13rem;
-      font-weight: 600;
+      gap: 2.1rem;
     }
-    @media (max-width: 1100px) {
-      .hero {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 2.5rem 3vw;
-      }
-      .hero-image-container {
-        margin-top: 3rem;
-        margin-bottom: 2rem;
-        width: 92vw;
-        max-width: 400px;
-        height: 45vw;
-        min-height: 150px;
-      }
+    .hero-title {
+      font-size: clamp(2.5rem, 7vw, 5.2rem);
+      font-family: 'Overlock', 'Inter', Arial, sans-serif;
+      font-weight: 900;
+      line-height: 1.09;
+      letter-spacing: -2px;
+      margin-bottom: 0.7rem;
+      color: #fff;
+      text-shadow: 0 4px 32px #0002;
+      margin-top:200px;
+    }
+    .hero-sub {
+      font-size: 1.28rem;
+      font-weight: 400;
+      color: #fff;
+      max-width: 480px;
+      opacity: 0.92;
+      margin: 0 auto 0.9rem auto;
+      text-shadow: 0 1px 8px #24266e14;
+    }
+    .hero-cta {
+      background: linear-gradient(90deg, #53d8fb 20%, #6d4aff 80%);
+      color: #fff;
+      font-size: 1.22rem;
+      font-weight: 700;
+      padding: 0.93em 2.5em;
+      border: none;
+      border-radius: 2.3em;
+      cursor: pointer;
+      box-shadow: 0 4px 32px #6d4aff33;
+      text-decoration: none;
+      margin-top: 0.2em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      transition: background 0.14s, color 0.14s, box-shadow 0.14s;
+      outline: none;
+    }
+    .hero-cta:hover {
+      background: linear-gradient(90deg, #6d4aff 10%, #53d8fb 90%);
+      color: #fff;
+      box-shadow: 0 8px 36px #6d4aff33;
+    }
+    .hero-cta-icon {
+      font-size: 1.28em;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    @media (max-width: 900px) {
+      .navbar { padding: 1.2rem 3vw; }
+      .hero-title { font-size: 2.3rem; }
+    }
+    @media (max-width: 700px) {
+      .navbar { flex-direction: column; gap: 1rem; }
+      .hero-main { max-width: 99vw; }
+      .hero-title { font-size: 2rem;}
+      .hero-sub { font-size: 1.04rem;}
     }
 
 /* Section curve/wave */
@@ -244,133 +271,412 @@ li { margin-bottom: .7rem; }
 
 /* Glass cards (Features, Pricing, etc.) */
 .features-section {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    padding: 6rem 0 6rem 0;
-    overflow: hidden;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .features-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%; height: 100%;
-    /*background: linear-gradient(120deg, #3977f6 10%, #9147eb 60%, #54b4d3 100%);*/
-    background: cornflowerblue;
-    background-size: 260% 260%;
-    animation: moveBgFeatures 44s ease-in-out infinite;
-    filter: blur(20px) brightness(1.09);
-    opacity: 0.93;
-    pointer-events: none;
-  }
-  @keyframes moveBgFeatures {
-    0%, 100% {background-position: 0% 60%;}
-    50% {background-position: 90% 40%;}
-  }
-  .features-content {
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 2vw;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .features-title {
-    font-size: 2.6rem;
-    font-weight: 800;
-    margin-bottom: 3.4rem;
-    letter-spacing: -1.2px;
-    color: #fff;
-    text-align: center;
-    text-shadow: 0 3px 30px rgba(40, 50, 120, 0.19);
-  }
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
-    gap: 2.3rem 2.1rem;
-    width: 100%;
-    margin-top: 0.2rem;
-  }
-  .feature-card {
-    background: rgba(24, 28, 60, 0.063);
-    padding: 2.3rem 2rem 2rem 2rem;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.2rem;
-    border: 1.5px solid rgba(255,255,255,0.07);
-    min-height: 280px;
-    opacity: 0.97;
-    transition: transform 0.25s cubic-bezier(.4,2,.3,1), box-shadow 0.25s;
-    will-change: transform;
-  }
-  .feature-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 16px 50px 0 rgba(110,80,230,0.18);
-  }
-  .feature-icon {
-    width: 5rem;
-    height: 5rem;
-    margin-bottom: 0.6rem;    
-    border-radius: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-  }
-  .feature-img{
-    max-width: 250px;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
-  }
-  .feature-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-    color: #fff;
-  }
-  .feature-desc {
-    font-size: 1.07rem;
-    font-weight: 500;
-    color: #e3eafe;
-    line-height: 1.56;
-    letter-spacing: 0.01em;
-  }
-  @media (max-width: 900px) {
-    .features-section {
-      padding: 4rem 0 3rem 0;
+      padding: 3rem 0 4rem 0;
+      background-color: white;
     }
-    .features-title {
-      font-size: 2rem;
+    .features-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.2rem;
+    }
+    .features-grid-custom {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas: 
+        "blue pink"
+        "blue orange"
+        "banner banner";
+      gap: 2rem;
+      margin-top: 1.5rem;
     }
     .feature-card {
+      border-radius: 1.4rem;
+      padding: 2.1rem 1.7rem 1.7rem 1.7rem;
+      box-shadow: 0 3px 24px 0 rgba(80,110,180,0.06);
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       min-height: 220px;
-      padding: 1.5rem 1.3rem 1.2rem 1.3rem;
+      background: #fff;
     }
-  }
-.pricing__grid .price-card {
-  border: 2.5px solid #b8c5fc; background: rgba(255,255,255,0.75);
-}
-.price-card.pro {
-  border: 2.5px solid var(--primary);
-  box-shadow: 0 18px 48px #b2cffb44,0 2px 8px #bb80ec1c;
-  background: rgba(247,242,255,0.96);
+    .feature-blue   { background: #bad7fc; grid-area: blue; }
+    .feature-pink   { background: #f4c0ea; grid-area: pink; }
+    .feature-orange { background: #fcddc7; grid-area: orange; }
+    .feature-green  { background: #c8fee5; grid-area: banner; }
+
+    .feature-title {
+      font-size: 2.5em;
+      font-weight: 800;
+      margin-bottom: 0.18rem;
+      margin-top: 0.8rem;
+      letter-spacing: -0.5px;
+    }
+    .feature-blue   .feature-title { color: #2283f6; }
+    .feature-pink   .feature-title { color: #ef40a4; }
+    .feature-orange .feature-title { color: #f5771f; }
+    .feature-green  .feature-title { color: #18a568; }
+
+    .feature-desc {
+      font-size: 1.03rem;
+      color: #444f6c;
+      font-weight: 500;
+      opacity: 0.84;
+      margin-bottom: 0;
+      margin-top: 0.35rem;
+      line-height: 1.56;
+    }
+    .feature-img {
+      width: 10em;
+      margin-bottom: 0.1rem;
+    }
+    /* Banner (Download) Card */
+    .banner-card {
+      min-height: 110px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.2rem 2rem;
+      display: flex;
+      gap: 1.2rem;
+    }
+    .banner-main {
+      flex: 1 1 0;
+    }
+    .banner-title {
+      font-size: 2.5em;
+      font-weight: 800;
+      color: #18a568;
+      margin-bottom: 0.3rem;
+    }
+    .banner-desc {
+      color: #14784f;
+      font-size: 1.04rem;
+      font-weight: 500;
+      margin-bottom: 0;
+      opacity: 0.86;
+    }
+    .banner-actions {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .banner-actions img,
+    .banner-actions svg {
+      width: 46px;
+      height: 46px;
+      background: #fff;
+      border-radius: 0.7em;
+      padding: 0.3em;
+      border: 1.5px solid #eee;
+    }
+    .banner-link {
+      margin-left: 2rem;
+      color: #18a568;
+      font-weight: 700;
+      font-size: 1.03rem;
+      background: #fff;
+      padding: 0.8em 1.4em;
+      border-radius: 1.8em;
+      border: 1.5px solid #c8f7e3;
+      text-decoration: none;
+      transition: background 0.17s;
+      box-shadow: 0 2px 12px 0 #b4f2d533;
+      white-space: nowrap;
+    }
+    .banner-link:hover {
+      background: #18a568;
+      color: #fff;
+    }
+
+    @media (max-width: 950px) {
+      .features-grid-custom {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: 
+          "blue"
+          "pink"
+          "orange"
+          "banner";
+        gap: 1.1rem;
+      }
+      .banner-card { flex-direction: column; align-items: flex-start; gap: 1.2rem;}
+      .banner-link { margin-left: 0; margin-top: 1rem;}
+    }
+
+    .pricing-section {
+  max-width: 830px;
+  margin: 0 auto 5rem auto;
+  padding: 0 4rem;
 }
 
-.price-card .btn { width: 100%; margin-top: 1.3rem; }
-.price-card .tag {
-  position: absolute; top: 1.1rem; right: 1.2rem; font-size: .95rem; font-weight: 600;
-  color: #fff; background: var(--primary); padding: .32em 1.1em; border-radius: 1rem;
-  letter-spacing: .01em; box-shadow: 0 2px 12px #7b68ee38;
+.pricing-header {
+  text-align: center;
+  margin-bottom: 2.6rem;
+}
+
+.pricing-header h1 {
+  font-size: 2.7rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin-bottom: 0.6rem;
+}
+
+.pricing-desc {
+  color: #62687a;
+  font-size: 1.11rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.pricing-card {
+  background: #fff;
+  border-radius: 1.6rem;
+  box-shadow: 0 4px 40px 0 #304ccf0c;
+  flex: 1 1 340px;
+  min-width: 320px;
+  padding: 2.5rem 2rem 1.8rem 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.pricing-card.pro {
+  background: #eaf3ff;
+  border: 1.5px solid #d4e7fc;
+}
+.pricing-price {
+  font-size: 2.3rem;
+  font-weight: 900;
+  margin-bottom: 0.2rem;
+  color: #23244b;
+}
+.pricing-amount {
+  font-size: 2.6rem;
+}
+.pricing-term {
+  font-size: 1.18rem;
+  color: #888c9a;
+  font-weight: 700;
+  margin-left: 0.4em;
+}
+.pricing-note {
+  font-size: 1.03rem;
+  color: #55596d;
+  margin-bottom: 1.25rem;
+  margin-top: 0.15rem;
+}
+.pricing-btn {
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 0.82em 1.4em;
+  border-radius: 2em;
+  margin-bottom: 1.3rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.14s;
+  margin-top: 0.2rem;
+}
+.primary-btn {
+  background: #111;
+  color: #fff;
+}
+.primary-btn:hover {
+  background: #23244b;
+}
+.blue-btn {
+  background: #2283f6;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.blue-btn:hover {
+  background: #145dd8;
+}
+
+.pricing-toggle {
+  margin-bottom: 1.1rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.pricing-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  cursor: pointer;
+  font-size: 1.04rem;
+  color: #888c9a;
+  font-weight: 700;
+  user-select: none;
+}
+.toggle-slider {
+  width: 36px;
+  height: 22px;
+  background: #b4d4f9;
+  border-radius: 1.1em;
+  margin-right: 0.35em;
+  position: relative;
+  transition: background 0.2s;
+  display: inline-block;
+}
+.toggle-slider:after {
+  content: '';
+  display: block;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #2283f6;
+  position: absolute;
+  top: 2px; left: 2px;
+  transition: left 0.2s;
+}
+input[type="checkbox"]:checked + .toggle-slider:after {
+  left: 16px;
+  background: #2283f6;
+}
+input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-label {
+  font-size: 1.01rem;
+  color: #0c6fc3;
+  font-weight: 700;
+  margin-left: 0.2em;
+  opacity: 0.88;
+}
+
+.pricing-list-title {
+  font-size: 1.07rem;
+  font-weight: 800;
+  color: #23244b;
+  margin-bottom: 0.33rem;
+}
+
+.pricing-list {
+  margin: 0 0 1.4rem 0;
+  padding: 0;
+  list-style: none;
+}
+.pricing-list li {
+  margin-bottom: 0.25em;
+  padding-left: 1.2em;
+  font-size: 1.04rem;
+  color: #23244b;
+  position: relative;
+  font-weight: 600;
+}
+.pricing-list li::before {
+  content: "✔";
+  color: #2283f6;
+  position: absolute;
+  left: 0;
+  font-size: 1em;
+}
+.pricing-faded {
+  color: #aaa;
+  opacity: 0.64;
+  text-decoration: line-through;
+}
+.coming-soon {
+  background: #fff3cc;
+  color: #d69218;
+  font-size: 0.89em;
+  border-radius: 1em;
+  padding: 0.08em 0.7em;
+  margin-left: 0.5em;
+  font-weight: 700;
+}
+
+.pricing-card-label {
+  font-size: 1.19rem;
+  font-weight: 800;
+  margin-top: auto;
+  color: #23244b;
+  letter-spacing: -0.5px;
+}
+.pro-label {
+  color: #2283f6;
+}
+
+.pricing-custom-card {
+  background: #fd6b1c;
+  border-radius: 1.3em;
+  margin-top: 2.3rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2.3rem 2.2rem 1.6rem 2.2rem;
+  color: #fff;
+  gap: 2.5rem;
+  box-shadow: 0 4px 32px 0 #d55e1022;
+  flex-wrap: wrap;
+}
+.custom-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin-bottom: 0.25em;
+}
+.custom-desc {
+  font-size: 1.08rem;
+  margin-bottom: 1.15rem;
+}
+.custom-btn {
+  background: #fff;
+  color: #fd6b1c;
+  font-weight: 700;
+  font-size: 1.01rem;
+  border: none;
+  padding: 0.7em 2.2em;
+  border-radius: 2em;
+  margin-top: 0.35em;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+.custom-btn:hover {
+  background: #ffe6d6;
+  color: #d55e10;
+}
+.custom-list-title {
+  font-size: 1.01rem;
+  font-weight: 800;
+  margin-bottom: 0.2em;
+}
+.custom-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.custom-list li {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.18em;
+  position: relative;
+  padding-left: 1.1em;
+}
+.custom-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #fff;
+  opacity: 0.82;
+}
+@media (max-width: 900px) {
+  .pricing-cards { flex-direction: column; gap: 2rem;}
+  .pricing-card { min-width: unset; }
+  .pricing-section { padding-bottom: 2.5rem; }
+  .pricing-custom-card { flex-direction: column; gap: 1.5rem;}
 }
 
 .comparison {
@@ -431,150 +737,265 @@ footer a:hover { color: var(--primary); }
   left: 0; bottom: 0; z-index: 1;
   pointer-events: none;
 }
+
+.split-section {
+  position: relative;
+  background: linear-gradient(120deg, #f7f9fc 60%, #eaf3ff 100%);
+  padding: 0 0 3.5rem 0;
+}
+.split-benefits {
+  background: linear-gradient(115deg, #f7f9fc 40%, #eaf3ff 95%);
+}
+.split-profitability {
+  background: linear-gradient(115deg, #f3f5fc 50%, #f7f9fc 100%);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3.2rem 1.5rem 0 1.5rem;
+}
+
+.split-grid {
+  display: flex;
+  gap: 3.6rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1em;
+}
+.split-grid.reverse {
+  flex-direction: row-reverse;
+}
+.split-img {
+  flex: 0 0 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 270px;
+  text-align: center;
+}
+.split-content {
+  flex: 1 1 350px;
+  min-width: 270px;
+  max-width: 530px;
+}
+.split-content h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #23244b;
+  margin-bottom: 1.1rem;
+  line-height: 1.18;
+  letter-spacing: -1.1px;
+}
+.split-content p {
+  color: #3d3e5d;
+  font-size: 1.15rem;
+  line-height: 1.67;
+  font-weight: 500;
+  margin-bottom: 1.4rem;
+  opacity: 0.97;
+}
+.split-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #53d8fb 15%, #6d4aff 85%);
+  color: #fff;
+  font-size: 1.14rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 2em;
+  padding: 0.85em 2.4em;
+  box-shadow: 0 2px 18px #6d4aff22;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: background 0.16s;
+}
+.split-btn:hover {
+  background: linear-gradient(90deg, #6d4aff 10%, #53d8fb 90%);
+  color: #fff;
+}
+
+.split-wave {
+  display: block;
+  width: 100vw;
+  min-width: 100%;
+  margin: 0;
+  margin-top: -2px;
+  line-height: 0;
+}
+
+#smartGauge,
+#profitChart {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 1.2rem;
+  margin: 0 auto;
+  display: block;
+  width: 210px;
+  max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .split-grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .split-grid.reverse {
+    flex-direction: column;
+  }
+  .split-content {
+    max-width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+  .split-img {
+    margin-bottom: 1.5rem;
+  }
+}
+
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="nav">
-  <div class="nav__inner">
-    <a href="#" class="logo">LawMango</a>
-    <div class="nav__links">
-      <a href="#features">Features</a>
-      <a href="#benefits">Benefits</a>
-      <a href="#comparison">Comparison</a>
-      <a href="#pricing">Pricing</a>
-    </div>
-    <a href="#" class="nav__login">Login</a>
+
+
+<!-- HERO -->
+
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+
+    <!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-logo">
+    <span class="navbar-logo-dot"></span>
+    LAW MANGO
+  </div>
+  <div class="navbar-links">
+    <a href="#" class="active">Home</a>
+    <a href="#">Features</a>
+    <a href="#">About</a>
+    <a href="#">Pricing</a>
+    <a href="#" class="navbar-cta">Login</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero-bg"></div>
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-title">Open-Source Legal Practice Management</div>
-    <div class="hero-sub">Run Your Law Firm Smarter—with LawMango</div>
-    <ul class="hero-list">
-      <li>Manage clients, cases, and documents</li>
-      <li>Track time, generate invoices instantly</li>
-      <li>Real-time reporting and analytics</li>
-    </ul>
-    <a href="#" class="hero-btn">Get Started</a>
-  </div>
-  <div class="hero-image-container">
-    <!-- Replace below with your image/mockup -->
-    <img src="./assets/appmockup.png" alt="App Screenshot" class="hero-image" />
-  </div>
-</section>
+
+    <div class="hero-bg"></div>
+    <div class="hero-main">
+      <div class="hero-title" data-aos="fade-up">
+        Open-Source Legal Practice<br>Management
+      </div>
+      <div class="hero-sub" data-aos="zoom-in">
+        Run Your Law Firm Smarter—with LawMango.<br>
+        Manage clients, cases, and documents.<br>
+        Track time, generate invoices instantly.<br>
+        Real-time reporting and analytics.
+      </div>
+      <a href="#" class="hero-cta" data-aos="fade-up">
+        <!-- Icon: Lucide MagicWand -->
+        <svg class="hero-cta-icon" width="25" height="25" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+          <path d="M15 4V2M15 16v-2M21 10h-2M9 10H7M19.07 6.93l-1.41-1.41M7.34 18.66l-1.41-1.41M18.66 16.66l-1.41 1.41M6.93 4.93l-1.41 1.41"/>
+          <rect x="11" y="7" width="2" height="10" rx="1"/>
+        </svg>
+        Get Started
+      </a>
+    </div>
+
+    <img style="width: 70vw; z-index:10; border-radius: 2em; margin-top:300px" src="./assets/dash.png" alt="">
+  </section>
+
+
 
 <!-- FEATURES -->
 <section class="features-section">
-  <div class="features-bg"></div>
   <div class="features-content">
-    <div class="features-title" data-aos="fade-up">
-      Powerful Features
-    </div>
-    <div class="features-grid">
-      <!-- Feature 1 -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-        <div >
-          <!-- Lucide: Users -->
-          <img class="feature-img" src="./assets/client.png" alt="">
-        </div>
+    <h1>Powerful Features</h1>
+    <div class="features-grid-custom">
+      <!-- Tall Left Card -->
+      <div class="feature-card feature-blue">
+        <img class="feature-img" src="./assets/client.png" alt="">
         <div class="feature-title">Client & Case Management</div>
         <div class="feature-desc">Keep all your client information and case details organized in one secure place.</div>
+        <img style="margin-top:auto;width:90%;max-width:310px;border-radius:1em;" src="./assets/virtual-4546.gif" alt="">
+
       </div>
-      <!-- Feature 2 -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-        <div >
-          <!-- Lucide: Users -->
-          <img class="feature-img" src="./assets/hourglass.png" alt="">
-        </div>
+      <!-- Tall Right Card Top -->
+      <div class="feature-card feature-pink">
+        <img class="feature-img" src="./assets/hourglass.png" alt="">
         <div class="feature-title">Time Tracking</div>
         <div class="feature-desc">Log time simply and precisely so you can maximize revenue and ensure every minute counts.</div>
+        <!--img style="margin-top:auto;width:90%;max-width:280px;border-radius:1em;" src="./assets/clock-806_512.gif" alt=""-->
       </div>
-      <!-- Feature 3 -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-        <div >
-          <!-- Lucide: Users -->
-          <img class="feature-img" src="./assets/billing.png" alt="">
-        </div>
+      <!-- Tall Right Card Bottom -->
+      <div class="feature-card feature-orange">
+        <img class="feature-img" src="./assets/billing.png" alt="">
         <div class="feature-title">Billing</div>
         <div class="feature-desc">Get paid faster and keep your cash flow healthy without the hassle.</div>
+        <img style="margin-top:auto;width:80%;max-width:200px;border-radius:1em;" src="./assets/sample-billing.png" alt="">
       </div>
-      <!-- Feature 4 -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-        <div >
-          <!-- Lucide: Users -->
-          <img class="feature-img" src="./assets/calendar.png" alt="">
+      <!-- Full-width Banner Card -->
+      <div class="feature-card feature-green banner-card">
+        <div class="banner-main">
+          <div class="banner-title">Download and Start Managing Your Firm!</div>
+          <div class="banner-desc">Get your legal sidekick and start managing cases like a pro — it’s secure, fast, and super easy.</div>
         </div>
-        <div class="feature-title">Calendar</div>
-        <div class="feature-desc">Manage all your appointments, court dates, and deadlines with one easy-to-use calendar.</div>
-      </div>
-      <!-- Feature 5 -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-        <div >
-          <!-- Lucide: Users -->
-          <img class="feature-img" src="./assets/documents.png" alt="">
+        <div class="banner-actions">
+          <img src="./assets/app-store.png" alt="App Store">
+          <img src="./assets/play-store.png" alt="Play Store">
+          <img src="./assets/qr-code.png" alt="QR code">
         </div>
-        <div class="feature-title">Docs Management</div>
-        <div class="feature-desc">Organize, store, and access all your legal documents securely in one place.</div>
-      </div>
-      <!-- Feature 6 -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
-        <div >
-          <!-- Lucide: Users -->
-          <img class="feature-img" src="./assets/report.png" alt="">
-        </div>
-        <div class="feature-title">Advanced Reports</div>
-        <div class="feature-desc">Powerful reporting tools that give you a clear view of your firm’s performance.</div>
+        <a class="banner-link" href="#">Log in to the Web App →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- BENEFITS -->
-<section class="split" id="benefits" style="background:#fff;">
+<!-- BENEFITS SECTION -->
+<section class="split-section split-benefits">
   <div class="container">
-    <div class="features__grid" style="align-items:center;">
-      <div class="image" style="text-align:center;">
+    <div class="split-grid">
+      <div class="split-img">
         <!-- Animated SVG Gauge -->
         <svg id="smartGauge" width="210" height="160" viewBox="0 0 210 160">
           <path d="M30 130 A80 80 0 0 1 180 130" fill="none" stroke="#e0eaff" stroke-width="18"/>
-          <path id="gaugeTrack" d="M30 130 A80 80 0 0 1 180 130" fill="none" stroke="#7b68ee" stroke-width="18" stroke-linecap="round"
+          <path id="gaugeTrack" d="M30 130 A80 80 0 0 1 180 130" fill="none" stroke="#6d4aff" stroke-width="18" stroke-linecap="round"
           stroke-dasharray="251" stroke-dashoffset="251"/>
-          <line id="gaugeNeedle" x1="105" y1="130" x2="105" y2="66" stroke="#7ef2f9" stroke-width="6" stroke-linecap="round"
+          <line id="gaugeNeedle" x1="105" y1="130" x2="105" y2="66" stroke="#53d8fb" stroke-width="6" stroke-linecap="round"
           style="transform-origin: 105px 130px; transform: rotate(-90deg);" />
           <circle cx="105" cy="130" r="10" fill="#fff"/>
-          <text id="gaugeText" x="105" y="90" text-anchor="middle" font-size="32" font-weight="700" fill="#7b68ee">0%</text>
+          <!--text id="gaugeText" x="105" y="100" text-anchor="middle" dominant-baseline="bottom" font-size="32" font-weight="700" fill="#6d4aff">0%</text-->
+
         </svg>
       </div>
-      <div class="content">
+      <div class="split-content">
         <h2>The Smarter, Faster Way to Run Your Law Firm</h2>
-        <p style="margin-bottom:1.5rem;">Never track time manually or juggle tools that weren’t built for law firms. Manage your clients, cases, time tracking, billing, calendar, documents, and reports with LawMango, the all-in-one platform for modern legal practices.</p>
-        <a href="#pricing" class="btn">Get Started</a>
+        <p>Never track time manually or juggle tools that weren’t built for law firms. Manage your clients, cases, time tracking, billing, calendar, documents, and reports with LawMango, the all-in-one platform for modern legal practices.</p>
+        <a href="#pricing" class="split-btn">Get Started</a>
       </div>
     </div>
   </div>
-  <svg class="wave" viewBox="0 0 1440 80"><path fill="#f3f5fc" d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,58.7C672,43,768,21,864,21.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,85.3L1440,86V0H0Z"></path></svg>
+  <svg class="split-wave" viewBox="0 0 1440 80"><path fill="#f3f5fc" d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,58.7C672,43,768,21,864,21.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,85.3L1440,86V0H0Z"></path></svg>
 </section>
 
-<section class="split" style="background:#f3f5fc;">
+<!-- PROFITABILITY SECTION -->
+<section class="split-section split-profitability">
   <div class="container">
-    <div class="features__grid" style="align-items:center;">
-      <div class="content">
+    <div class="split-grid reverse">
+      <div class="split-content">
         <h2>Profitability, without the stress.</h2>
-        <p style="margin-bottom:1.5rem;">You didn’t become a lawyer to get buried in admin work. LawMango streamlines your practice so you can focus on winning cases and serving clients. Work smarter, grow faster, and boost your firm’s profitability.</p>
-        <a href="#pricing" class="btn">Get Started</a>
+        <p>You didn’t become a lawyer to get buried in admin work. LawMango streamlines your practice so you can focus on winning cases and serving clients. Work smarter, grow faster, and boost your firm’s profitability.</p>
+        <a href="#pricing" class="split-btn">Get Started</a>
       </div>
-      <div class="image">
-        <canvas id="profitChart" width="320" height="180" aria-label="Profit growth chart" style="background: #fff; border-radius: 1.2rem; box-shadow: var(--shadow);"></canvas>
+      <div class="split-img">
+        <canvas id="profitChart" width="320" height="180" aria-label="Profit growth chart"></canvas>
       </div>
     </div>
   </div>
-  <svg class="wave" viewBox="0 0 1440 80"><path fill="#fff" d="M0,64L48,74.7C96,85,192,107,288,106.7C384,107,480,85,576,64C672,43,768,21,864,21.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,85.3L1440,86V0H0Z"></path></svg>
+  <svg class="split-wave" viewBox="0 0 1440 80"><path fill="#fff" d="M0,64L48,74.7C96,85,192,107,288,106.7C384,107,480,85,576,64C672,43,768,21,864,21.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,85.3L1440,86V0H0Z"></path></svg>
 </section>
+
 
 <!-- COMPARISON TABLE -->
 <section class="comparison" id="comparison">
@@ -626,46 +1047,80 @@ footer a:hover { color: var(--primary); }
 </section>
 
 <!-- PRICING -->
-<section class="pricing" id="pricing" style="background:#fff;">
-  <div class="container">
-    <h2>Simple, transparent pricing</h2>
-    <div class="pricing__grid">
-      <div class="price-card">
-        <h3>Community</h3>
-        <p style="font-size:2rem;font-weight:800;margin:.6rem 0 1.3rem;">$0</p>
-        <p style="font-size:.97rem;margin-bottom:1.1rem;color:#8e8faa;">Self-hosted • Unlimited users</p>
-        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.42rem;text-align:left;">
-          <li>✔ Core case & client management</li>
-          <li>✔ Built-in time tracking</li>
-          <li>✔ Community forum support</li>
-        </ul>
-        <a href="#" class="btn">Download</a>
+<section class="pricing-section">
+  <div class="pricing-header">
+    <h1>One plan. All features.<br>No surprises.</h1>
+    <p class="pricing-desc">
+      Affordable, fast, and ridiculously helpful — choosing us makes sense.
+    </p>
+  </div>
+  <div class="pricing-cards">
+    <!-- Free Plan -->
+    <div class="pricing-card">
+      <div class="pricing-price">
+        <span class="pricing-amount">$00</span><span class="pricing-term">/ month</span>
       </div>
-      <div class="price-card pro">
-        <span class="tag">Most Popular</span>
-        <h3>Pro&nbsp;Cloud</h3>
-        <p style="font-size:2rem;font-weight:800;margin:.6rem 0 1.3rem;">$29<span style="font-size:.92rem;font-weight:500;">/user/mo</span></p>
-        <p style="font-size:.97rem;margin-bottom:1.1rem;color:#8e8faa;">Fully-hosted • Priority support</p>
-        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.42rem;text-align:left;">
-          <li>✔ Everything in Community</li>
-          <li>✔ Secure cloud hosting & backups</li>
-          <li>✔ E-invoicing & online payments</li>
-          <li>✔ Email / chat support</li>
-        </ul>
-        <a href="#" class="btn">Start Free Trial</a>
+      <div class="pricing-note">Great for personal use, light writing, and getting a feel for your AI sidekick.</div>
+      <button class="pricing-btn primary-btn">Start Free — No credit card needed</button>
+      <div class="pricing-list-title">What's included:</div>
+      <ul class="pricing-list">
+        <li>Unlimited writing & speech</li>
+        <li>Tone & style controls</li>
+        <li>Creative content boosts</li>
+        <li>25+ languages</li>
+        <li class="pricing-faded">Priority support</li>
+      </ul>
+      <div class="pricing-card-label">Free plan</div>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="pricing-card pro">
+      <div class="pricing-price">
+        <span class="pricing-amount">$49</span><span class="pricing-term">/ month</span>
       </div>
-      <div class="price-card">
-        <h3>Enterprise</h3>
-        <p style="font-size:2rem;font-weight:800;margin:.6rem 0 1.3rem;">Custom</p>
-        <p style="font-size:.97rem;margin-bottom:1.1rem;color:#8e8faa;">On-prem or private cloud</p>
-        <ul style="list-style:none;margin:0 0 1.5rem;padding:0;display:grid;gap:.42rem;text-align:left;">
-          <li>✔ Everything in Pro</li>
-          <li>✔ SSO & custom integrations</li>
-          <li>✔ Dedicated account manager</li>
-          <li>✔ SLA & priority response</li>
-        </ul>
-        <a href="#" class="btn">Contact Sales</a>
+      <div class="pricing-note">Ideal for creators, students, and pros who want to write smarter & faster with powerful AI tools.</div>
+      <button class="pricing-btn blue-btn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" style="vertical-align:middle;margin-right:0.5em;" viewBox="0 0 24 24">
+          <path d="M15 4V2M15 16v-2M21 10h-2M9 10H7M19.07 6.93l-1.41-1.41M7.34 18.66l-1.41-1.41M18.66 16.66l-1.41 1.41M6.93 4.93l-1.41 1.41"/>
+          <rect x="11" y="7" width="2" height="10" rx="1"/>
+        </svg>
+        Go Pro — Cancel anytime
+      </button>
+      <div class="pricing-toggle">
+        <label>
+          <input type="checkbox" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Save 15% yearly</span>
+        </label>
       </div>
+      <div class="pricing-list-title">What's included:</div>
+      <ul class="pricing-list">
+        <li>Unlimited writing & speech</li>
+        <li>Tone & style controls</li>
+        <li>Creative content boosts <span class="coming-soon">Coming Soon</span></li>
+        <li>25+ languages</li>
+        <li>Priority support</li>
+      </ul>
+      <div class="pricing-card-label pro-label">Pro plan</div>
+    </div>
+  </div>
+
+  <!-- Custom Plan -->
+  <div class="pricing-custom-card">
+    <div>
+      <div class="custom-title">Custom plan</div>
+      <div class="custom-desc">Open the app, start typing, or just speak to your AI sidekick instantly.</div>
+      <button class="custom-btn">Contact Sales</button>
+    </div>
+    <div>
+      <div class="custom-list-title">What's included:</div>
+      <ul class="custom-list">
+        <li>Everything in Pro</li>
+        <li>Team collaboration tools</li>
+        <li>Admin dashboard</li>
+        <li>Dedicated support</li>
+        <li>Dedicated support</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -816,7 +1271,7 @@ footer a:hover { color: var(--primary); }
     let n = 0;
     const counter = setInterval(() => {
       n += step;
-      gaugeText.textContent = `${Math.round(n)}%`;
+      //gaugeText.textContent = `${Math.round(n)}%`;
       if (n >= 100) clearInterval(counter);
     }, 1300 / frames);
   }
