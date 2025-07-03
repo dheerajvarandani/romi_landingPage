@@ -154,7 +154,28 @@ html {
   <section class="split" id="benefits">
     <div class="container">
       <div class="split">
-        <div class="image"><img src="https://via.placeholder.com/500x350/0f172a/ffffff?text=Feature+Image" alt="Running your firm smarter"></div>
+ <!-- Replace the <img> with this SVG gauge -->
+<div class="image">
+  <svg id="smartGauge" width="500" height="350" viewBox="0 0 500 350">
+    <!-- Background arc -->
+    <path d="M50 300 A200 200 0 0 1 450 300" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="32"/>
+    <!-- Animated arc -->
+    <path id="gaugeTrack" d="M50 300 A200 200 0 0 1 450 300"
+          fill="none" stroke="#7c3aed" stroke-width="32" stroke-linecap="round"
+          stroke-dasharray="628" stroke-dashoffset="628"/>
+    <!-- Needle -->
+    <line id="gaugeNeedle"
+    x1="250" y1="300" x2="250" y2="115"
+    stroke="#ffffff" stroke-width="6" stroke-linecap="round"
+    style="transform-origin: 250px 300px; transform: rotate(-90deg);" />
+    <!-- Center hub -->
+    <circle cx="250" cy="300" r="10" fill="#ffffff"/>
+    <!-- Text -->
+    <text id="gaugeText" x="250" y="190" text-anchor="middle"
+          font-size="48" font-weight="700" fill="#ffffff">0%</text>
+  </svg>
+</div>
+
         <div class="content">
           <h2 style="text-align:left">The Smarter, Faster Way to Run Your Law Firm</h2>
           <p style="margin-bottom:1.5rem">Never track time manually or juggle tools that weren’t built for law firms. Manage your clients, cases, time tracking, billing, calendar, documents, and reports with LawMango, the all-in-one powerful legal practice management software.</p>
@@ -173,7 +194,9 @@ html {
           <p style="margin-bottom:1.5rem">You didn’t become a lawyer to spend your days buried in admin work. LawMango streamlines your legal practice so you can focus on what matters most—winning cases and serving clients. Manage your workload with ease and increase your firm’s profitability.</p>
           <a href="#pricing" class="btn">Get Started</a>
         </div>
-        <div class="image"><img src="https://via.placeholder.com/500x350/10265f/ffffff?text=Performance+Image" alt="Increase profitability"></div>
+        <div class="image">
+          <canvas id="profitChart" width="500" height="350" aria-label="Profit growth chart"></canvas>
+        </div>
       </div>
     </div>
   </section>
@@ -346,7 +369,7 @@ html {
     © <span id="year"></span> LawMango. All rights reserved.
   </p>
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   // dynamic year
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -359,6 +382,97 @@ html {
       btn.querySelector('span').textContent = item.classList.contains('open') ? '−' : '+';
     });
   });
+
+  // 1️⃣ Keep the chart config in a function so we can recreate it
+  function createProfitChart(ctx) {
+    // Purple-to-blue gradient
+    const g = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
+    g.addColorStop(0, '#7c3aed');
+    g.addColorStop(1, '#2196f3');
+
+    return new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Monthly Profit ($)',
+          data: [12, 14, 18, 21, 26, 32],     // your numbers here
+          borderColor: g,
+          borderWidth: 3,
+          pointRadius: 4,
+          pointBackgroundColor: '#ffffff',
+          fill: false,
+          tension: 0.35
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1200 },       // 1.2-sec tween
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#cbd5e1' } },
+          y: {
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            ticks: { color: '#cbd5e1', callback: v => `$${v}k` }
+          }
+        }
+      }
+    });
+  }
+
+  // 2️⃣ Observer: rebuild the chart each time the canvas re-enters viewport
+  const canvasEl = document.getElementById('profitChart');
+  const ctx = canvasEl.getContext('2d');
+  let chartInstance = null;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Destroy old chart (if it exists) and recreate
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = createProfitChart(ctx);
+      }
+    });
+  }, { threshold: 0.6 });    // fires when 60 % of canvas is visible
+
+  observer.observe(canvasEl);
+
+
+
+    // ===== Animated “Smart Gauge”  ==========================================
+    const gaugeArc   = document.getElementById('gaugeTrack');
+  const gaugeNeedle = document.getElementById('gaugeNeedle');
+  const gaugeText  = document.getElementById('gaugeText');
+  const totalLen   = 628;              // stroke-dasharray matches this
+
+  function animateGauge() {
+    // Animate strokeDashoffset from full -> 0
+    gaugeArc.animate([{ strokeDashoffset: totalLen }, { strokeDashoffset: 0 }],
+                     { duration: 1200, fill: 'forwards', easing: 'ease-out' });
+// rotate from -90° to +90°
+gaugeNeedle.animate(
+  [{ transform: 'rotate(-90deg)' },
+   { transform: 'rotate(90deg)' }],
+  { duration: 1200, fill: 'forwards', easing: 'ease-out' }
+);
+    // Count-up percentage text
+    const frames = 60, step = 100 / frames;
+    let n = 0;
+    const counter = setInterval(() => {
+      n += step;
+      gaugeText.textContent = `${Math.round(n)}%`;
+      if (n >= 100) clearInterval(counter);
+    }, 1200 / frames);
+  }
+
+  // ===== Trigger when 60 % in view  ======================================
+  const gaugeObserver = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) animateGauge();
+    }), { threshold: 0.6 }
+  );
+  gaugeObserver.observe(document.getElementById('smartGauge'));
 </script>
 
 </body> 
